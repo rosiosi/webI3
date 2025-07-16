@@ -67,4 +67,33 @@
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJva2dzenNyeXNwYWF6eW9ibm53Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2MzU5MDMsImV4cCI6MjA2ODIxMTkwM30.VV0hfZimdDE6Qy6EyI-pACkBMggqNTdmgEMcsD-sTm0'               // 🔁 Reemplaza con tu API Key pública
       );
 
-      async function cargarProductos
+      async function cargarProductos() {
+        const { data: productos, error } = await supabase
+          .from('productos')
+          .select('*')
+          .order('id', { ascending: true });
+
+        if (error) {
+          console.error('Error al obtener productos:', error);
+          return;
+        }
+
+        const contenedor = document.getElementById('contenedor');
+
+        productos.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            ${p.imagen_url ? `<img src="${p.imagen_url}" alt="${p.nombre}">` : ''}
+            <div class="nombre">${p.nombre}</div>
+            <div class="precio">Bs ${Number(p.precio).toFixed(2)}</div>
+            <div class="descripcion">${p.descripcion ?? ''}</div>
+          `;
+          contenedor.appendChild(card);
+        });
+      }
+
+      cargarProductos();
+    </script>
+  </body>
+</html>
