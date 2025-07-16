@@ -1,99 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Productos</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f4f4f4;
-      }
+<head>
+<meta charset="UTF-8" />
+<title>Test Supabase</title>
+</head>
+<body>
+<h1>Test Supabase</h1>
+<div id="output"></div>
 
-      h1 {
-        text-align: center;
-      }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+  const supabaseClient = supabase.createClient(
+    'https://bokgszsryspaazyobnnw.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJva2dzenNyeXNwYWF6eW9ibm53Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2MzU5MDMsImV4cCI6MjA2ODIxMTkwM30.VV0hfZimdDE6Qy6EyI-pACkBMggqNTdmgEMcsD-sTm0'
+  );
 
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-        padding: 20px;
-      }
+  async function test() {
+    const { data, error } = await supabaseClient
+      .from('productos')
+      .select('*');
 
-      .card {
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 10px;
-        box-shadow: 2px 2px 6px #00000010;
-      }
+    const output = document.getElementById('output');
 
-      .card img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 6px;
-      }
+    if (error) {
+      output.textContent = 'Error: ' + error.message;
+      console.error(error);
+      return;
+    }
 
-      .nombre {
-        font-weight: bold;
-        margin: 8px 0 4px;
-      }
+    output.textContent = 'Datos recibidos: ' + JSON.stringify(data);
+  }
 
-      .precio {
-        color: #0a892f;
-        margin-bottom: 6px;
-      }
-
-      .descripcion {
-        font-size: 0.9em;
-        color: #444;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Productos</h1>
-    <div class="grid" id="contenedor"></div>
-
-    <!-- Librería de Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-    <!-- Código JavaScript -->
-    <script>
-      const supabaseClient = supabase.createClient(
-        'https://bokgszsryspaazyobnnw.supabase.co', // 🔁 Reemplaza con tu URL real
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJva2dzenNyeXNwYWF6eW9ibm53Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2MzU5MDMsImV4cCI6MjA2ODIxMTkwM30.VV0hfZimdDE6Qy6EyI-pACkBMggqNTdmgEMcsD-sTm0'               // 🔁 Reemplaza con tu API Key pública
-      );
-
-      async function cargarProductos() {
-        const { data: productos, error } = await supabaseClient
-          .from('Productos')
-          .select('*')
-          .order('id', { ascending: true });
-
-        if (error) {
-          console.error('Error al obtener productos:', error);
-          return;
-        }
-
-        const contenedor = document.getElementById('contenedor');
-
-        productos.forEach(p => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `
-            ${p.imagen_url ? `<img src="${p.image_url}" alt="${p.nombre}">` : ''}
-            <div class="nombre">${p.nombre}</div>
-            <div class="precio">Bs ${Number(p.precio).toFixed(2)}</div>
-            <div class="descripcion">${p.description ?? ''}</div>
-          `;
-          contenedor.appendChild(card);
-        });
-      }
-
-      cargarProductos();
-    </script>
-  </body>
+  test();
+</script>
+</body>
 </html>
