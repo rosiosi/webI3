@@ -69,7 +69,7 @@
 
       async function cargarProductos() {
         const { data: productos, error } = await supabaseClient
-          .from('productos')
+          .from('Productos')
           .select('*')
           .order('id', { ascending: true });
 
@@ -87,7 +87,7 @@
             ${p.imagen_url ? `<img src="${p.imagen_url}" alt="${p.nombre}">` : ''}
             <div class="nombre">${p.nombre}</div>
             <div class="precio">Bs ${Number(p.precio).toFixed(2)}</div>
-            <div class="descripcion">${p.descripcion ?? ''}</div>
+            <div class="descripcion">${p.description ?? ''}</div>
           `;
           contenedor.appendChild(card);
         });
