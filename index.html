@@ -17,7 +17,7 @@
 
   async function test() {
     const { data, error } = await supabaseClient
-      .from('Productos')
+      .from('productos')
       .select('*');
 
     const output = document.getElementById('output');
