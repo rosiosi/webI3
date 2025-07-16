@@ -84,7 +84,7 @@
           const card = document.createElement('div');
           card.className = 'card';
           card.innerHTML = `
-            ${p.imagen_url ? `<img src="${p.imagen_url}" alt="${p.nombre}">` : ''}
+            ${p.imagen_url ? `<img src="${p.image_url}" alt="${p.nombre}">` : ''}
             <div class="nombre">${p.nombre}</div>
             <div class="precio">Bs ${Number(p.precio).toFixed(2)}</div>
             <div class="descripcion">${p.description ?? ''}</div>
